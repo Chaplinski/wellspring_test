@@ -21,6 +21,16 @@ class Train extends DB
         return $this;
     }
 
+    public function update($id, $train_line, $route_name, $run_number, $operator_id){
+        $sql = "UPDATE `trains` SET `train_line` = '" . $train_line . "', `route_name` = '" . $route_name . "', `run_number` = '" . $run_number . "', `operator_id` = '" . $operator_id . "' WHERE `id` = " . $id;
+
+        if(!mysqli_query($this->connect(), $sql)){
+            die($this->connect()->connect_error);
+        }
+
+        return true;
+    }
+
     public function getAll()
     {
         $result = $this->getAllFromDB();
