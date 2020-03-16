@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="97ab598c-0fac-42dd-a55d-3b0f0985381e" name="Wellspring" url="http://3.20.229.123">
+        <fileTransfer host="3.20.229.123" port="22" privateKey="C:\Users\scott\.ssh\wellspring.ppk" rootFolder="/var/www/html" accessType="SFTP" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
