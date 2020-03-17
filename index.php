@@ -64,6 +64,12 @@ if(!empty($_POST["import"])){
             <button onclick="document.location.href='add.php'">Add Train</button>
             <br/>
             <br/>
+            <form method="post" enctype="multipart/form-data">
+                <p>Upload CSV: <input type="file" name="inputFile" /></p>
+                <p>
+                    <input type="submit" name="import" value="Import" />
+                </p>
+            </form>
             <table>
                 <tr>
                     <th>Train Line</th>
@@ -78,26 +84,62 @@ if(!empty($_POST["import"])){
                     $train = new Train();
                     $trains = $train->getAll();
 
+                    $page_number = $_GET['page'];
+
+                    if(empty($page_number)) $page_number = 1;
+                    $high_end = $page_number * 5;
+                    $low_end = $high_end - 5;
+                    $i = 1;
                     foreach ($trains as $train) {
-                        echo '<tr>
-                        <td>' . $train->train_line . '</td>
-                        <td>' . $train->route_name . '</td>
-                        <td>' . $train->run_number . '</td>
-                        <td>' . $train->operator_id . '</td>
-                        <td><a href="edit.php?id=' . $train->id . '">Edit</a>  <a href="delete.php?id=' . $train->id . '">Delete</a></td>
-
-                        </tr>';
+                        if($i > $low_end && $i <= $high_end) {
+                            echo '<tr>
+                            <td>' . $train->train_line . '</td> 
+                            <td>' . $train->route_name . '</td>
+                            <td>' . $train->run_number . '</td>
+                            <td>' . $train->operator_id . '</td>
+                            <td><a href="edit.php?id=' . $train->id . '">Edit</a>  <a href="delete.php?id=' . $train->id . '">Delete</a></td>
+    
+                            </tr>';
+                        }
+                        $i++;
                     }
+
+                    echo '</table>';
+
+                    $trainCount = count($trains);
+                    $pageCount = ceil($trainCount/5);
+
+                    if (!empty($_GET['page'])){
+                        $page = intval($_GET['page']);
+                    } else {
+                        $page = 1;
+                    }
+                    $next_page = $page + 1;
+                    $previous_page = $page - 1;
+
+                    if($previous_page > 0){
+                        $padding = 190;
+                    } else {
+                        $padding = 260;
+                    }
+                    echo '<div style="padding-left: ' . $padding . 'px">';
+
+                    if($previous_page > 0 ) {
+                        echo '<span onclick="document.location.href=\'index.php?page=' . $previous_page . '\'" style="color: blue; cursor:pointer;"><< Previous </span>';
+                    }
+
+                    $i = 1;
+                    while ($pageCount + 1 != $i){
+                        echo '<span onclick="document.location.href=\'index.php?page=' . $i . '\'" style="color: blue; cursor:pointer;">' . $i . ' </span>';
+                        $i++;
+                    }
+
+                    if($next_page <= $pageCount ) {
+                        echo '<span onclick="document.location.href=\'index.php?page=' . $next_page . '\'" style="color: blue; cursor:pointer;"> Next >> </span>';
+                    }
+
                 ?>
-            </table>
 
-            <form method="post" enctype="multipart/form-data">
-                <p>Upload CSV: <input type="file" name="inputFile" /></p>
-                <p>
-                    <input type="submit" name="import" value="Import" />
-                </p>
-            </form>
-
-
+                </div>
         </body>
     </html>
