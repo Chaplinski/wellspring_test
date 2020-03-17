@@ -21,6 +21,14 @@ class Train extends DB
         return $this;
     }
 
+    public function delete($id){
+
+        $sql = "DELETE FROM `trains` WHERE id = " . $id;
+        $result = mysqli_query($this->connect(), $sql);
+
+        return true;
+    }
+
     public function update($id, $train_line, $route_name, $run_number, $operator_id){
         $sql = "UPDATE `trains` SET `train_line` = '" . $train_line . "', `route_name` = '" . $route_name . "', `run_number` = '" . $run_number . "', `operator_id` = '" . $operator_id . "' WHERE `id` = " . $id;
 
@@ -51,6 +59,7 @@ class Train extends DB
                 FROM `trains` 
                 GROUP BY `train_line`, `route_name`, `run_number`, `operator_id` 
                 ORDER BY `run_number` ";
+
 
         $result = $this->connect()->query($sql);
         $num_rows = $result->num_rows;
